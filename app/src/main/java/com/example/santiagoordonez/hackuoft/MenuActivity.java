@@ -1,11 +1,11 @@
 package com.example.santiagoordonez.hackuoft;
 
-import android.os.PersistableBundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.MotionEvent;
+
+import com.example.santiagoordonez.hackuoft.MenuItems.PagerAdapter;
 
 public class MenuActivity extends FragmentActivity {
     PagerAdapter pAdapter;
@@ -23,6 +23,7 @@ public class MenuActivity extends FragmentActivity {
         viewPager.setAdapter(pAdapter);
 
     }
+
 
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
