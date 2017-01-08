@@ -30,11 +30,11 @@ public class EventPageFragment extends Fragment {
         View view = inflater.inflate(R.layout.event_fragment, container, false);
         eventView = (TextView) view.findViewById(R.id.position);
         Bundle bundle = getArguments();
-        String position = Integer.toString(bundle.getInt("position"));
 
-        //set the text of the screen
-        String var = "EventView " + position;
-        eventView.setText(var);
+        //get the title
+        String title = bundle.getString("title");
+
+        eventView.setText(title);
 
         return view;
     }
