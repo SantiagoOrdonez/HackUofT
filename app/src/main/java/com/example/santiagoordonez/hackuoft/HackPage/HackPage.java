@@ -22,10 +22,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class HackathonsPage extends FragmentActivity {
+public class HackPage extends FragmentActivity {
 
     // initialize a new view pager object
     ViewPager viewPager;
+    HackathonDTO hackathonDTO;
+    ArrayList<HackathonDTO> allHackathons;
+    int counter = 0;
+    int counter2 = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +38,6 @@ public class HackathonsPage extends FragmentActivity {
         setContentView(R.layout.activity_show_hackathons);
         new ParseHackathons().execute("http://www.hackalist.org/api/1.0/2017/01.json");
     }
-
 
     public class ParseHackathons extends AsyncTask<String,String,ArrayList<HackathonDTO>>{
         @Override
@@ -70,9 +73,9 @@ public class HackathonsPage extends FragmentActivity {
 //                }
                 JSONObject parentObject = new JSONObject(finalJSON);
                 JSONArray parentArray = parentObject.getJSONArray("January");
-                ArrayList<HackathonDTO> hackathons = new  ArrayList<HackathonDTO>();
+                allHackathons = new  ArrayList<HackathonDTO>();
                 for (int i = 0; i < parentArray.length();i++){
-                    HackathonDTO hackathonDTO = new HackathonDTO();
+                    hackathonDTO = new HackathonDTO();
                     JSONObject jsonObject =  parentArray.getJSONObject(i);
                     String title = jsonObject.getString("title");
                     hackathonDTO.setTitle(title);
@@ -106,9 +109,9 @@ public class HackathonsPage extends FragmentActivity {
                     hackathonDTO.setTwitterURL(twitterURL);
                     String notes = jsonObject.getString("notes");
                     hackathonDTO.setNotes(notes);
-                    hackathons.add(hackathonDTO);
+                    allHackathons.add(hackathonDTO);
                 }
-                return hackathons;
+                return allHackathons;
             }catch(MalformedURLException e){
                 e.printStackTrace();
 
@@ -133,18 +136,109 @@ public class HackathonsPage extends FragmentActivity {
         @Override
         protected void onPostExecute(ArrayList<HackathonDTO> hacks) {
             super.onPostExecute(hacks);
-            //get the view pager object from the view
-            viewPager = (ViewPager) findViewById(R.id.viewPager);
+            for(HackathonDTO hack: hacks){
+                ParsePicture parsePicture = new ParsePicture(hack);
+                if(!hack.getFacebookURL().equals("")){
+                    counter2++;
+                    parsePicture.execute("https://graph.facebook.com/"+ hack.getFacebookURL() +"" +
+                            "?fields=picture.width(640)&access_token=1278772608884108%7CNyvDdjr45c-jtXgQyRG0rkiTq2s");
+                }
 
-            //add swipe adapter
-            HackSwipeAdapter hackSwipeAdapter = new HackSwipeAdapter(getSupportFragmentManager(),hacks);
 
-            //set adapter for viewPager
-            viewPager.setAdapter(hackSwipeAdapter);
-            //start json parsin.
+            }
         }
     }
 
+    public class ParsePicture extends AsyncTask<String,String,String>{
+        HackathonDTO hackathon;
+        public ParsePicture(HackathonDTO hack){
+            hackathon = hack;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
+            try{
+                URL url = new URL(params[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+
+                InputStream stream = connection.getInputStream();
+
+                reader = new BufferedReader(new InputStreamReader(stream));
+
+                StringBuffer buffer = new StringBuffer();
+
+                String line = "";
+
+                while ((line = reader.readLine()) != null){
+                    buffer.append(line);
+                }
+                String finalJSON = buffer.toString();
+                JSONObject parentObject = new JSONObject(finalJSON);
+                JSONObject pictureObject;
+                if (parentObject.has("picture")){
+                    pictureObject = parentObject.getJSONObject("picture");
+
+                }else{
+                    return "";
+                }
+                JSONObject dataObject = pictureObject.getJSONObject("data");
+                if(dataObject.has("url")){
+                    return dataObject.getString("url");
+                }else{
+                    return "";
+                }
+            }catch(MalformedURLException e){
+                e.printStackTrace();
+
+            }catch(IOException e){
+                e.printStackTrace();
+            }catch(JSONException e){
+                e.printStackTrace();
+            } finally {
+                if (connection != null){
+                    connection.disconnect();
+                }
+                try {
+                    if (reader != null){
+                        reader.close();
+                    }
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String url) {
+            super.onPostExecute(url);
+            if (!url.equals("")) {
+                hackathon.setPictureURL(url);
+                System.out.print(url);
+            }
+            counter++;
+            allDone();
+
+        }
+
+        protected void allDone(){
+            if (counter >= counter2){
+                //get the view pager object from the view
+                System.out.println("hellodjasdsad");
+                viewPager = (ViewPager) findViewById(R.id.viewPager);
+
+                //add swipe adapter
+                HackSwipeAdapter hackSwipeAdapter = new HackSwipeAdapter(getSupportFragmentManager(),allHackathons);
+
+                //set adapter for viewPager
+                viewPager.setAdapter(hackSwipeAdapter);
+                //start json parsin.
+            }
+        }
+    }
 
 
 
