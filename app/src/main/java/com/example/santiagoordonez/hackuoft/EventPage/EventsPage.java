@@ -6,9 +6,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.santiagoordonez.hackuoft.HackPage.HackPage;
 import com.example.santiagoordonez.hackuoft.HackPage.HackSwipeAdapter;
 import com.example.santiagoordonez.hackuoft.R;
 import com.example.santiagoordonez.hackuoft.dto.EventDTO;
+import com.example.santiagoordonez.hackuoft.dto.HackathonDTO;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +25,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.santiagoordonez.hackuoft.R.id.viewPager;
 
 public class EventsPage extends FragmentActivity {
 
@@ -55,6 +59,18 @@ public class EventsPage extends FragmentActivity {
 
             //set adapter for viewPager
             viewPager.setAdapter(eventSwipeAdapter);
+
+            for(EventDTO hack: eventDTOs){
+                EventsPage.ParsePicture parsePicture = new HackPage.ParsePicture(hack);
+                if(!hack.getFacebookURL().equals("")){
+                    counter2++;
+                    parsePicture.execute("https://graph.facebook.com/"+ hack.getFacebookURL() +"" +
+                            "?fields=picture.width(640)&access_token=1278772608884108%7CNyvDdjr45c-jtXgQyRG0rkiTq2s");
+                }
+
+
+            }
+        }
 
         }
 
@@ -158,6 +174,96 @@ public class EventsPage extends FragmentActivity {
                 }
             }
             return null;
+        }
+    }
+
+public class ParsePicture extends AsyncTask<String,String,String>{
+    HackathonDTO hackathon;
+    public ParsePicture(HackathonDTO hack){
+        hackathon = hack;
+    }
+
+    @Override
+    protected String doInBackground(String... params) {
+        HttpURLConnection connection = null;
+        BufferedReader reader = null;
+        try{
+            URL url = new URL(params[0]);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.connect();
+
+            InputStream stream = connection.getInputStream();
+
+            reader = new BufferedReader(new InputStreamReader(stream));
+
+            StringBuffer buffer = new StringBuffer();
+
+            String line = "";
+
+            while ((line = reader.readLine()) != null){
+                buffer.append(line);
+            }
+            String finalJSON = buffer.toString();
+            JSONObject parentObject = new JSONObject(finalJSON);
+            JSONObject pictureObject;
+            if (parentObject.has("picture")){
+                pictureObject = parentObject.getJSONObject("picture");
+
+            }else{
+                return "";
+            }
+            JSONObject dataObject = pictureObject.getJSONObject("data");
+            if(dataObject.has("url")){
+                return dataObject.getString("url");
+            }else{
+                return "";
+            }
+        }catch(MalformedURLException e){
+            e.printStackTrace();
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }catch(JSONException e){
+            e.printStackTrace();
+        } finally {
+            if (connection != null){
+                connection.disconnect();
+            }
+            try {
+                if (reader != null){
+                    reader.close();
+                }
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(String url) {
+        super.onPostExecute(url);
+        if (!url.equals("")) {
+            hackathon.setPictureURL(url);
+            System.out.print(url);
+        }
+        counter++;
+        allDone();
+
+    }
+
+    protected void allDone(){
+        if (counter >= counter2){
+            //get the view pager object from the view
+            System.out.println("hellodjasdsad");
+            viewPager = (ViewPager) findViewById(viewPager);
+
+            //add swipe adapter
+            HackSwipeAdapter hackSwipeAdapter = new HackSwipeAdapter(getSupportFragmentManager(),allHackathons);
+
+            //set adapter for viewPager
+            viewPager.setAdapter(hackSwipeAdapter);
+            //start json parsin.
         }
     }
 }
