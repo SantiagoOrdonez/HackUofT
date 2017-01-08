@@ -2,6 +2,9 @@ package com.example.santiagoordonez.hackuoft.HackPage;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,7 +13,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.ImageView;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.*;
 import com.example.santiagoordonez.hackuoft.R;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -22,6 +31,7 @@ public class HackPageFragment extends Fragment {
     String school_name;
     String cost;
     String facebook_url;
+    String picture_url;
 
     TextView hackView;
     TextView schoolNameView;
@@ -48,7 +58,20 @@ public class HackPageFragment extends Fragment {
         school_name = bundle.getString("school_name");
         cost = bundle.getString("cost");
         facebook_url = bundle.getString("facebook_url");
+        picture_url = bundle.getString("picture_url", picture_url);
 
+//        new DownloadImageTask(hack_background)
+//                .execute(picture_url);
+//        try {
+//            URL url = new URL(picture_url);
+//            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+//            hack_background.setImageBitmap(bmp);
+//        } catch (MalformedURLException e) {
+//            System.out.println("Error: " + e.getMessage());
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         //set the text of the screen
         hackView.setText(title);
         schoolNameView.setText(school_name);
@@ -59,6 +82,15 @@ public class HackPageFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ImageView cool_pic = (ImageView) getActivity().findViewById(R.id.imageView);
+
+        ImageView hack_background = (ImageView) getActivity().findViewById(R.id.hack_fragment_image);
+        if(!(picture_url == null)){
+            Picasso.with(getContext()).load(picture_url).into(hack_background);
+        }else{
+            hack_background.setImageResource(R.drawable.hack_screen_pic);
+        }
 
         view.setOnTouchListener(new View.OnTouchListener() {
 
@@ -80,6 +112,30 @@ public class HackPageFragment extends Fragment {
         });
 
 
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 
 
