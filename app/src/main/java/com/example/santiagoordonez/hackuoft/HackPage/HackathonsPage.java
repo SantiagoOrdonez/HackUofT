@@ -29,18 +29,12 @@ public class HackathonsPage extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_hackathons);
-
-        //get the view pager object from the view
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-
-        //add swipe adapter
-        HackSwipeAdapter hackSwipeAdapter = new HackSwipeAdapter(getSupportFragmentManager());
-
-        //set adapter for viewPager
-        viewPager.setAdapter(hackSwipeAdapter);
+        new ParseHackathons().execute("http://www.hackalist.org/api/1.0/2017/01.json");
     }
+
 
     public class ParseHackathons extends AsyncTask<String,String,ArrayList<HackathonDTO>>{
         @Override
@@ -139,8 +133,23 @@ public class HackathonsPage extends FragmentActivity {
         @Override
         protected void onPostExecute(ArrayList<HackathonDTO> hacks) {
             super.onPostExecute(hacks);
+            //get the view pager object from the view
+            viewPager = (ViewPager) findViewById(R.id.viewPager);
+
+            //add swipe adapter
+            HackSwipeAdapter hackSwipeAdapter = new HackSwipeAdapter(getSupportFragmentManager(),hacks);
+
+            //set adapter for viewPager
+            viewPager.setAdapter(hackSwipeAdapter);
             //start json parsin.
         }
     }
+
+
+
+
+
+
+
 
 }

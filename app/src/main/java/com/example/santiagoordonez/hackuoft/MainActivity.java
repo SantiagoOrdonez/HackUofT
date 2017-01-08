@@ -31,6 +31,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    ArrayList<HackathonDTO> finalHackathons;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,4 +86,5 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

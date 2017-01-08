@@ -27,22 +27,32 @@ import java.util.ArrayList;
  */
 
 public class HackSwipeAdapter extends FragmentPagerAdapter {
-    //TODO: This constructor will have to accept an array of HackathonEvent classes that it will iterate through as swipe objects.
-    public HackSwipeAdapter(FragmentManager fm /*, Array<HackathonEvent>*/) {
-        super(fm);
-    }
     ArrayList<HackathonDTO> finalHackathons;
+
+    //TODO: This constructor will have to accept an array of HackathonEvent classes that it will iterate through as swipe objects.
+    public HackSwipeAdapter(FragmentManager fm , ArrayList<HackathonDTO> hack) {
+        super(fm);
+        finalHackathons = hack;
+    }
     @Override
     //TODO: This method will give us the current HackathonEvent object using a position as it's index in the list.
     public Fragment getItem(int position) {
+
         HackPageFragment fragment = new HackPageFragment();
+
+        //get current hackathon event
+        HackathonDTO hackathon = finalHackathons.get(position);
 
         //This will allow us to pass variables from the HackathonEvent Objects to the fragments
         Bundle bundle = new Bundle();
 
         //Right now we are passing a variable called "position" that gives the position of an object
         bundle.putInt("position", position);
-        
+
+        bundle.putInt("year",Integer.parseInt(hackathon.getYear()));
+
+        bundle.putString("city",hackathon.getCity());
+
         //add bundle as an argument
         fragment.setArguments(bundle);
 
@@ -54,9 +64,8 @@ public class HackSwipeAdapter extends FragmentPagerAdapter {
     public int getCount() {
 
         // we will leave this as static for now
-        return 5;
+        return finalHackathons.size();
     }
-
 
 
 }
