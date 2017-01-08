@@ -53,6 +53,10 @@ public class HackSwipeAdapter extends FragmentPagerAdapter {
 
         bundle.putString("city",hackathon.getCity());
 
+        bundle.putString("school_name",hackathon.getHost());
+
+        bundle.putString("title",hackathon.getTitle());
+
         //add bundle as an argument
         fragment.setArguments(bundle);
 

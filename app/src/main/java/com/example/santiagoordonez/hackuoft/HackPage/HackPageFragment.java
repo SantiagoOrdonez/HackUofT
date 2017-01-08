@@ -19,6 +19,7 @@ public class HackPageFragment extends Fragment {
     TextView hackView;
     TextView cityView;
     TextView yearView;
+    TextView schoolNameView;
 
     public HackPageFragment() {
         // Required empty public constructor
@@ -34,20 +35,23 @@ public class HackPageFragment extends Fragment {
 
 
         hackView = (TextView) view.findViewById(R.id.position);
-        cityView = (TextView) view.findViewById(R.id.city);
-        yearView = (TextView) view.findViewById(R.id.year);
+        //cityView = (TextView) view.findViewById(R.id.city);
+        //yearView = (TextView) view.findViewById(R.id.year);
+        schoolNameView = (TextView) view.findViewById(R.id.school_name);
 
         Bundle bundle = getArguments();
 
-        String position = Integer.toString(bundle.getInt("position"));
-        String year = Integer.toString(bundle.getInt("year"));
-        String city = bundle.getString("city");
+        //String position = Integer.toString(bundle.getInt("position"));
+        String title = bundle.getString("title");
+        //String year = Integer.toString(bundle.getInt("year"));
+        //String city = bundle.getString("city");
+        String school_name_view = bundle.getString("school_name");
 
         //set the text of the screen
-        String var = "HackView " + position;
-        hackView.setText(var);
-        cityView.setText(city);
-        yearView.setText(year);
+        hackView.setText(title);
+        //cityView.setText(city);
+        //yearView.setText(year);
+        schoolNameView.setText(school_name_view);
 
 
         return view;
