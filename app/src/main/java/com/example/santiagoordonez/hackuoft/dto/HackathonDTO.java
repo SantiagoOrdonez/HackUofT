@@ -6,17 +6,27 @@ package com.example.santiagoordonez.hackuoft.dto;
 
 public class HackathonDTO {
     private String title;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    private String url;
     private String startDate;
     private String endDate;
-    private int year;
+    private String year;
     private String city;
     private String host;
-    private int length;
-    private int size;
-    private boolean travel;
-    private boolean prize;
-    private boolean highSchoolers;
-    private int cost;
+    private String length;
+    private String size;
+    private String travel;
+    private String prize;
+    private String highSchoolers;
+    private String cost;
     private String facebookURL;
     private String twitterURL;
     private String googlePlusURL;
@@ -47,11 +57,11 @@ public class HackathonDTO {
         this.endDate = endDate;
     }
 
-    public int getYear() {
+    public String getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(String year) {
         this.year = year;
     }
 
@@ -71,51 +81,51 @@ public class HackathonDTO {
         this.host = host;
     }
 
-    public int getLength() {
+    public String getLength() {
         return length;
     }
 
-    public void setLength(int length) {
+    public void setLength(String length) {
         this.length = length;
     }
 
-    public int getSize() {
+    public String getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(String size) {
         this.size = size;
     }
 
-    public boolean isTravel() {
+    public String isTravel() {
         return travel;
     }
 
-    public void setTravel(boolean travel) {
+    public void setTravel(String travel) {
         this.travel = travel;
     }
 
-    public boolean isPrize() {
+    public String isPrize() {
         return prize;
     }
 
-    public void setPrize(boolean prize) {
+    public void setPrize(String prize) {
         this.prize = prize;
     }
 
-    public boolean isHighSchoolers() {
+    public String isHighSchoolers() {
         return highSchoolers;
     }
 
-    public void setHighSchoolers(boolean highSchoolers) {
+    public void setHighSchoolers(String highSchoolers) {
         this.highSchoolers = highSchoolers;
     }
 
-    public int getCost() {
+    public String getCost() {
         return cost;
     }
 
-    public void setCost(int cost) {
+    public void setCost(String cost) {
         this.cost = cost;
     }
 
@@ -153,9 +163,8 @@ public class HackathonDTO {
 
     public String toString(){
 
-        return"";
+        return getTitle() +" "+  getUrl() +" "+  getCity() +" "+  getCost() +" "+  getStartDate()
+                +" "+  getEndDate() +" "+  getFacebookURL()+" "+  getGooglePlusURL() +" "+  getHost()
+                +" "+ getNotes();
     }
-
-
-
 }
