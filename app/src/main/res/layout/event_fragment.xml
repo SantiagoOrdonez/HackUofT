@@ -1,0 +1,39 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.santiagoordonez.hackuoft.EventPage.EventPageFragment">
+
+    <!-- Transparent layer -->
+    <RelativeLayout
+        android:id="@+id/transparentOverlay2"
+        android:layout_width="match_parent" android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center"
+        android:background="@color/red_transparent" />
+
+    <com.example.santiagoordonez.hackuoft.autoResize.AutoResizeTextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="EventView X"
+        android:ellipsize="none"
+        android:gravity="center"
+        android:id="@+id/title"
+        android:maxLines="1"
+        android:textColor="#080808"
+        android:textSize="40dp"/> <!-- maximum size -->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="19/30/2089"
+        android:id="@+id/date"
+        android:textColor="#080808"
+        android:gravity="center"
+        android:layout_marginTop="70dp"
+        android:textSize="20dp"/>
+
+</FrameLayout>
+

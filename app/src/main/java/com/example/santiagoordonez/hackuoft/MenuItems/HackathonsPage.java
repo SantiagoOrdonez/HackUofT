@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import com.example.santiagoordonez.hackuoft.HackPage.ShowHackathons;
+
 import com.example.santiagoordonez.hackuoft.R;
 
 
@@ -18,8 +18,6 @@ import com.example.santiagoordonez.hackuoft.R;
  */
 
 public class HackathonsPage extends Fragment {
-
-    private GestureDetector gDetector;
 
 
     @Override
@@ -38,7 +36,7 @@ public class HackathonsPage extends Fragment {
 
                 if(event.getAction() == MotionEvent.ACTION_UP){
                     //User has clicked the image.
-                    Intent intent = new Intent(view.getContext(), ShowHackathons.class);
+                    Intent intent = new Intent(view.getContext(), com.example.santiagoordonez.hackuoft.HackPage.HackathonsPage.class);
                     startActivity(intent);
                 }
                 return true;

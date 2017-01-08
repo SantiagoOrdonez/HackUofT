@@ -22,7 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class ShowHackathons extends FragmentActivity {
+public class HackathonsPage extends FragmentActivity {
 
     // initialize a new view pager object
     ViewPager viewPager;
