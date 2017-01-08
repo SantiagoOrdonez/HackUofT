@@ -1,4 +1,4 @@
-package com.example.santiagoordonez.hackuoft;
+package com.example.santiagoordonez.hackuoft.MenuItems;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

@@ -1,4 +1,4 @@
-package com.example.santiagoordonez.hackuoft;
+package com.example.santiagoordonez.hackuoft.HackPage;
 
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.santiagoordonez.hackuoft.R;
 import com.example.santiagoordonez.hackuoft.dto.HackathonDTO;
 
 import java.io.BufferedReader;
