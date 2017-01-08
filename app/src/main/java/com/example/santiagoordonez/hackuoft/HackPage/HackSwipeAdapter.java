@@ -31,7 +31,7 @@ public class HackSwipeAdapter extends FragmentPagerAdapter {
     public HackSwipeAdapter(FragmentManager fm /*, Array<HackathonEvent>*/) {
         super(fm);
     }
-
+    ArrayList<HackathonDTO> finalHackathons;
     @Override
     //TODO: This method will give us the current HackathonEvent object using a position as it's index in the list.
     public Fragment getItem(int position) {
@@ -54,7 +54,7 @@ public class HackSwipeAdapter extends FragmentPagerAdapter {
     public int getCount() {
 
         // we will leave this as static for now
-        return 5;
+        return ;
     }
 
     public class ParseHackathons extends AsyncTask<String,String,String> {
@@ -158,7 +158,8 @@ public class HackSwipeAdapter extends FragmentPagerAdapter {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            //start json parsi
+            finalHackathons = result;
+
         }
     }
 
