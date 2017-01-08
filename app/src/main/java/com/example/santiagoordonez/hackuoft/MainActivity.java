@@ -14,6 +14,7 @@ import java.util.List;
 import android.content.Intent;
 import android.widget.*;
 
+import com.example.santiagoordonez.hackuoft.dto.EventDTO;
 import com.example.santiagoordonez.hackuoft.dto.HackathonDTO;
 
 import org.json.JSONArray;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
         goToMenu();
+//        new EventTask().execute("https://graph.facebook.com/143619579060117/events?access_token=1278772608884108%7CNyvDdjr45c-jtXgQyRG0rkiTq2s&__mref=message_bubble");
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+//        new EventTask().execute("https://graph.facebook.com/143619579060117/events?access_token=1278772608884108%7CNyvDdjr45c-jtXgQyRG0rkiTq2s&__mref=message_bubble");
+//        new ParseHackathons().execute("https://www.hackalist.org/api/1.0/2017/01.json");
         return true;
     }
 
