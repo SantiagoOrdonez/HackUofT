@@ -10,6 +10,11 @@ public class EventDTO {
     String eventId;
     String pictureUrl;
 
+
+    public String getFacebookUrl(){
+        return "https://www.facebook.com/" + eventId;
+    }
+
     public String getPictureUrl() {
         return pictureUrl;
     }
