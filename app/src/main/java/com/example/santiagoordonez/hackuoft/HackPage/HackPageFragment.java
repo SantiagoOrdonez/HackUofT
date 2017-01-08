@@ -31,6 +31,7 @@ public class HackPageFragment extends Fragment {
         hackView = (TextView) view.findViewById(R.id.position);
         Bundle bundle = getArguments();
         String position = Integer.toString(bundle.getInt("position"));
+        String year = Integer.toString(bundle.getInt("year"));
 
         //set the text of the screen
         String var = "HackView " + position;
