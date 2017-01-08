@@ -42,11 +42,9 @@ public class ShowHackathons extends FragmentActivity {
         viewPager.setAdapter(hackSwipeAdapter);
     }
 
-    public class ParseHackathons extends AsyncTask<String,String,String>{
-
-
+    public class ParseHackathons extends AsyncTask<String,String,ArrayList<HackathonDTO>>{
         @Override
-        protected String doInBackground(String... params) {
+        protected ArrayList<HackathonDTO> doInBackground(String... params) {
             HttpURLConnection connection = null;
             BufferedReader reader = null;
             try{
@@ -64,7 +62,6 @@ public class ShowHackathons extends FragmentActivity {
 
                 while ((line = reader.readLine()) != null){
                     buffer.append(line);
-
                 }
                 String finalJSON = buffer.toString();
 //                String months[] = {"January","February","March","April","May","June","July","August",
@@ -117,7 +114,7 @@ public class ShowHackathons extends FragmentActivity {
                     hackathonDTO.setNotes(notes);
                     hackathons.add(hackathonDTO);
                 }
-                return buffer.toString();
+                return hackathons;
             }catch(MalformedURLException e){
                 e.printStackTrace();
 
@@ -139,10 +136,9 @@ public class ShowHackathons extends FragmentActivity {
             }
             return null;
         }
-
         @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
+        protected void onPostExecute(ArrayList<HackathonDTO> hacks) {
+            super.onPostExecute(hacks);
             //start json parsin.
         }
     }

@@ -18,22 +18,22 @@ package com.example.santiagoordonez.hackuoft.EventPage;
         import java.net.URL;
         import java.util.ArrayList;
         import java.util.List;
-
 /**
  * Created by avidave on 2017-01-07.
  */
-
-public class EventTask extends AsyncTask<String, String, List<EventDTO>> {
-
+//Remember to check over code to check if all parameters exist, rn it works for prototype only
+public class EventTask extends AsyncTask<String, String, ArrayList<EventDTO>> {
     @Override
-    protected List<EventDTO> doInBackground(String... params) {
+    protected ArrayList<EventDTO> doInBackground(String... params) {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
 
         try {
+            System.out.println("Hello!");
             URL url = new URL(params[0]);
             connection = (HttpURLConnection) url.openConnection();
             connection.connect();
+            System.out.println("connect?");
             InputStream stream = connection.getInputStream();
             reader = new BufferedReader(new InputStreamReader(stream));
             StringBuffer buffer = new StringBuffer();
@@ -47,37 +47,51 @@ public class EventTask extends AsyncTask<String, String, List<EventDTO>> {
             JSONObject parentObject = new JSONObject(finalJson);
             JSONArray parentArray = parentObject.getJSONArray("data");
 
-            List<EventDTO> EventDTOList = new ArrayList<>();
+            ArrayList<EventDTO> EventDTOList = new ArrayList<EventDTO>();
 
             for (int i = 0; i < parentArray.length(); i++) {
                 EventDTO currentEventDTO = new EventDTO();
 
-
                 JSONObject finalObject = parentArray.getJSONObject(i);
                 //Checks for the date if it is in the future or the day of
-                String startTime = (finalObject.getString("start_time").substring(0,9) + " " +
-                        finalObject.getString("start_time").substring(11,15));
-                String endTime = (finalObject.getString("end_time").substring(0,9) + " " +
-                        finalObject.getString("end_time").substring(11,15));
-
-                if (Integer.parseInt(startTime.substring(0,3))<=2015){
-                    return EventDTOList;
+                String startTime = "";
+                if(finalObject.has("start_time")){
+                    startTime = (finalObject.getString("start_time").substring(0,9) + " " +
+                            finalObject.getString("start_time").substring(11,15));
+                }
+                String endTime = "";
+                if(finalObject.has("endTime")){
+                    endTime = (finalObject.getString("end_time").substring(0,9) + " " +
+                            finalObject.getString("end_time").substring(11,15));
+                }
+                if (Integer.parseInt(startTime.substring(0,4))<=2015){
+                    System.out.println("dead");
+                    break;
                 }
                 String description = finalObject.getString("description");
                 String name = finalObject.getString("name");
-                JSONObject placeObj = finalObject.getJSONObject("place");
-                if (placeObj.getBoolean("location")){
-                    JSONObject locationObj = placeObj.getJSONObject("location");
-                    String street = locationObj.getString("street");
-                    String address = (street + " " + "ON,"+ "Canada");
-                    currentEventDTO.setLocation(address);
-                    currentEventDTO.setDesription(description);
-                    currentEventDTO.setName(name);
-                    currentEventDTO.setStartTime(startTime);
-                    currentEventDTO.setEndTime(endTime);
-                    EventDTOList.add(currentEventDTO);
-                }
-                else{
+                if(finalObject.has("place")){
+                    JSONObject placeObj = finalObject.getJSONObject("place");
+                    if (placeObj.has("location")){
+                        JSONObject locationObj = placeObj.getJSONObject("location");
+                        String street = locationObj.getString("street");
+                        String address = (street + " " + "ON,"+ "Canada");
+                        currentEventDTO.setLocation(address);
+                        currentEventDTO.setDesription(description);
+                        currentEventDTO.setName(name);
+                        currentEventDTO.setStartTime(startTime);
+                        currentEventDTO.setEndTime(endTime);
+                        EventDTOList.add(currentEventDTO);
+                    }
+                    else{
+                        currentEventDTO.setDesription(description);
+                        currentEventDTO.setName(name);
+                        currentEventDTO.setLocation("3359 Mississauga Rd, ON,Canada");
+                        currentEventDTO.setStartTime(startTime);
+                        currentEventDTO.setEndTime(endTime);
+                        EventDTOList.add(currentEventDTO);
+                    }
+                }else{
                     currentEventDTO.setDesription(description);
                     currentEventDTO.setName(name);
                     currentEventDTO.setLocation("3359 Mississauga Rd, ON,Canada");
@@ -85,10 +99,11 @@ public class EventTask extends AsyncTask<String, String, List<EventDTO>> {
                     currentEventDTO.setEndTime(endTime);
                     EventDTOList.add(currentEventDTO);
                 }
-
-
             }
             return EventDTOList;
+//            for(EventDTO event: EventDTOList){
+//                System.out.print(event);
+//            }
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
