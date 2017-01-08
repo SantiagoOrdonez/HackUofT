@@ -1,13 +1,35 @@
 package com.example.santiagoordonez.hackuoft;
 
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.widget.TextView;
 
-public class MenuActivity extends AppCompatActivity {
+public class MenuActivity extends FragmentActivity {
+    PagerAdapter pAdapter;
+    ViewPager viewPager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        viewPager = (ViewPager) findViewById(R.id.pager);
+
+        pAdapter = new PagerAdapter(getSupportFragmentManager());
+
+        viewPager.setAdapter(pAdapter);
+
     }
+
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//
+//    }
+
+
+
 }
