@@ -21,7 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".MenuActivity" />
-        <activity android:name=".HackPage.HackathonsPage" />
+        <activity android:name=".HackPage.HackPage" />
+        <activity android:name=".HackPage.HackPageDetails" />
         <activity android:name=".EventPage.EventsPage"></activity>
     </application>
 
