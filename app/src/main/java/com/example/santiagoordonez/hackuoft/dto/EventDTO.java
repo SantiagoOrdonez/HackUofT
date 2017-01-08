@@ -7,6 +7,16 @@ public class EventDTO {
     String Location;
     String Name;
     String Description;
+    String eventId;
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
+
 
     public String getStartTime() {
         return startTime;

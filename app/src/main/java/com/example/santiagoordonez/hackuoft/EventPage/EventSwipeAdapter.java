@@ -15,16 +15,12 @@ import java.util.ArrayList;
 
 public class EventSwipeAdapter extends FragmentPagerAdapter {
 
-    ArrayList<EventDTO> eventDTOs;
+    private ArrayList<EventDTO> eventDTOs;
 
     //TODO: This constructor will have to accept an array of Event classes that it will iterate through as swipe objects.
-    public EventSwipeAdapter(FragmentManager fm ) {
+    public EventSwipeAdapter(FragmentManager fm, ArrayList<EventDTO> events ) {
         super(fm);
-    }
-
-    //set global events
-    public void setEventsArrayList(ArrayList<EventDTO> events){
-        this.eventDTOs = events;
+        eventDTOs = events;
     }
 
     @Override
@@ -38,11 +34,19 @@ public class EventSwipeAdapter extends FragmentPagerAdapter {
         //get the title
         String name = current_event.getName();
 
+        //Get Date
+        String date = current_event.getStartTime();
+
+        //get the id
+        String id = current_event.getEventId();
+
         //This will allow us to pass variables from the HackathonEvent Objects to the fragments
         Bundle bundle = new Bundle();
 
         //Right now we are passing a variable called "position" that gives the position of an object
         bundle.putString("title", name);
+        bundle.putString("date", date);
+        bundle.putString("id", id);
 
         //add bundle as an argument
         fragment.setArguments(bundle);

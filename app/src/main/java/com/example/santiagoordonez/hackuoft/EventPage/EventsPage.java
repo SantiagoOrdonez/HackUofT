@@ -51,10 +51,7 @@ public class EventsPage extends FragmentActivity {
             viewPager = (ViewPager) findViewById(R.id.viewPager);
 
             //add swipe adapter
-            EventSwipeAdapter eventSwipeAdapter = new EventSwipeAdapter (getSupportFragmentManager());
-
-            //send in the events
-            eventSwipeAdapter.setEventsArrayList(eventDTOs);
+            EventSwipeAdapter eventSwipeAdapter = new EventSwipeAdapter (getSupportFragmentManager(), eventDTOs);
 
             //set adapter for viewPager
             viewPager.setAdapter(eventSwipeAdapter);
@@ -94,13 +91,11 @@ public class EventsPage extends FragmentActivity {
                     //Checks for the date if it is in the future or the day of
                     String startTime = "";
                     if(finalObject.has("start_time")){
-                        startTime = (finalObject.getString("start_time").substring(0,9) + " " +
-                                finalObject.getString("start_time").substring(11,15));
+                        startTime = (finalObject.getString("start_time").substring(0,10));
                     }
                     String endTime = "";
                     if(finalObject.has("endTime")){
-                        endTime = (finalObject.getString("end_time").substring(0,9) + " " +
-                                finalObject.getString("end_time").substring(11,15));
+                        endTime = (finalObject.getString("end_time").substring(0,10));
                     }
                     if (Integer.parseInt(startTime.substring(0,4))<=2015){
                         System.out.println("dead");
@@ -108,6 +103,9 @@ public class EventsPage extends FragmentActivity {
                     }
                     String description = finalObject.getString("description");
                     String name = finalObject.getString("name");
+                    String eventID = finalObject.getString("id");
+                    currentEventDTO.setEventId(eventID);
+
                     if(finalObject.has("place")){
                         JSONObject placeObj = finalObject.getJSONObject("place");
                         if (placeObj.has("location")){
@@ -118,7 +116,6 @@ public class EventsPage extends FragmentActivity {
                             currentEventDTO.setDesription(description);
                             currentEventDTO.setName(name);
                             currentEventDTO.setStartTime(startTime);
-                            currentEventDTO.setEndTime(endTime);
                             EventDTOList.add(currentEventDTO);
                         }
                         else{
@@ -134,7 +131,6 @@ public class EventsPage extends FragmentActivity {
                         currentEventDTO.setName(name);
                         currentEventDTO.setLocation("3359 Mississauga Rd, ON,Canada");
                         currentEventDTO.setStartTime(startTime);
-                        currentEventDTO.setEndTime(endTime);
                         EventDTOList.add(currentEventDTO);
                     }
                 }
