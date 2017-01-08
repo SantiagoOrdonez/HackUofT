@@ -3,7 +3,6 @@ package com.example.santiagoordonez.hackuoft.dto;
 /**
  * Created by SantiagoOrdonez on 2017-01-07.
  */
-
 public class HackathonDTO {
     private String title;
 
@@ -31,6 +30,16 @@ public class HackathonDTO {
     private String twitterURL;
     private String googlePlusURL;
     private String notes;
+
+    public String getPictureURL() {
+        return pictureURL;
+    }
+
+    public void setPictureURL(String pictureURL) {
+        this.pictureURL = pictureURL;
+    }
+
+    private String pictureURL;
 
 
     public String getTitle() {
