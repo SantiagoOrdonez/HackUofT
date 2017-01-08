@@ -33,9 +33,10 @@ public class HackPageFragment extends Fragment {
         String position = Integer.toString(bundle.getInt("position"));
 
         //set the text of the screen
-        hackView.setText("HackView "+ position);
+        String var = "HackView " + position;
+        hackView.setText(var);
 
-        return inflater.inflate(R.layout.hack_page_fragment, container, false);
+        return view;
     }
 
 }

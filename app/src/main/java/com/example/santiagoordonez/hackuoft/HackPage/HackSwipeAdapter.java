@@ -3,13 +3,14 @@ package com.example.santiagoordonez.hackuoft.HackPage;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 /**
  * Created by Ose on 1/7/2017.
  */
 
-public class HackSwipeAdapter extends FragmentStatePagerAdapter {
+public class HackSwipeAdapter extends FragmentPagerAdapter {
     //TODO: This constructor will have to accept an array of HackathonEvent classes that it will iterate through as swipe objects.
     public HackSwipeAdapter(FragmentManager fm /*, Array<HackathonEvent>*/) {
         super(fm);
@@ -18,7 +19,7 @@ public class HackSwipeAdapter extends FragmentStatePagerAdapter {
     @Override
     //TODO: This method will give us the current HackathonEvent object using a position as it's index in the list.
     public Fragment getItem(int position) {
-        Fragment fragment = new Fragment();
+        HackPageFragment fragment = new HackPageFragment();
 
         //This will allow us to pass variables from the HackathonEvent Objects to the fragments
         Bundle bundle = new Bundle();

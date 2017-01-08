@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.santiagoordonez.hackuoft.NewsPage;
+import com.example.santiagoordonez.hackuoft.MenuItems.NewsPage;
 
 /**
  * Created by jayrebgz on 2017-01-07.
