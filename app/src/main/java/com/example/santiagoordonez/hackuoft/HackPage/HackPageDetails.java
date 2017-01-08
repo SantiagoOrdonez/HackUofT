@@ -10,10 +10,10 @@ public class HackPageDetails extends AppCompatActivity {
 
     public HackPageDetails() {
 
-        String school_name = getIntent().getExtras().getString("school_name");
-        String title = getIntent().getExtras().getString("title");
-        String cost = getIntent().getExtras().getString("cost");
-        String facebook_url = getIntent().getExtras().getString("facebook_url");
+        //String school_name = getIntent(). .getString("school_name");
+        //String title = getIntent().getExtras().g .getString("title");
+        //String cost = getIntent().getExtras().getString("cost");
+        //String facebook_url = getIntent().getExtras().getString("facebook_url");
 
     }
 
