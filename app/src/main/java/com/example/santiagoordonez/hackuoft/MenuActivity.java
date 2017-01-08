@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 
 import com.example.santiagoordonez.hackuoft.MenuItems.PagerAdapter;
+import com.example.santiagoordonez.hackuoft.dto.HackathonDTO;
+
+import java.util.ArrayList;
 
 public class MenuActivity extends FragmentActivity {
     PagerAdapter pAdapter;
     ViewPager viewPager;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
