@@ -17,5 +17,11 @@ public class ShowHackathons extends FragmentActivity {
 
         //get the view pager object from the view
         viewPager = (ViewPager) findViewById(R.id.viewPager);
+
+        //add swipe adapter
+        HackSwipeAdapter hackSwipeAdapter = new HackSwipeAdapter(getSupportFragmentManager());
+
+        //set adapter for viewPager
+        viewPager.setAdapter(hackSwipeAdapter);
     }
 }
