@@ -1,4 +1,4 @@
-package com.example.santiagoordonez.hackuoft;
+package com.example.santiagoordonez.hackuoft.HackPage;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

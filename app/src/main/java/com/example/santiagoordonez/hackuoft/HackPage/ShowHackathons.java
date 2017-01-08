@@ -1,12 +1,12 @@
-package com.example.santiagoordonez.hackuoft;
+package com.example.santiagoordonez.hackuoft.HackPage;
 
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.example.santiagoordonez.hackuoft.dto.HackathonDTO;
+import com.example.santiagoordonez.hackuoft.HackPage.HackSwipeAdapter;
+import com.example.santiagoordonez.hackuoft.R;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,7 +15,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 
 public class ShowHackathons extends FragmentActivity {
 

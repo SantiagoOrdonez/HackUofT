@@ -1,4 +1,4 @@
-package com.example.santiagoordonez.hackuoft;
+package com.example.santiagoordonez.hackuoft.MenuItems;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.example.santiagoordonez.hackuoft.R;
 
 /**
  * Created by jayrebgz on 2017-01-07.
