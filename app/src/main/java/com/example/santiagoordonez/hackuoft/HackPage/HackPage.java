@@ -21,6 +21,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class HackPage extends FragmentActivity {
 
@@ -36,10 +38,42 @@ public class HackPage extends FragmentActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_hackathons);
-        new ParseHackathons().execute("http://www.hackalist.org/api/1.0/2017/01.json");
+        int index = 1;
+        int date[] = getDate();
+        int couter = 1;
+        while (counter < 3){
+            if (date[0] < 10){
+                index++;
+                new ParseHackathons().execute("http://www.hackalist.org/api/1.0/2017/0"+date[0]+".json");
+            }
+            if (index >= 10 && index < 12){
+                index++;
+                new ParseHackathons().execute("http://www.hackalist.org/api/1.0/2017/"+date[0]+".json");
+            }
+            if (index >12){
+                index++;
+                new ParseHackathons().execute("http://www.hackalist.org/api/1.0/2017/0"+date[0]%12+".json");
+            }
+            counter++;
+        }
     }
-
+    public int[] getDate() {
+        int index = -1;
+        int date[] = new int[2];
+        String months[] = {"January", "February", "March", "April", "May", "June", "July", "August",
+                "September", "October", "November", "December"};
+        Date today = Calendar.getInstance().getTime();
+        for (int i = 0; i < months.length; i++) {
+            if (months[i].startsWith(today.toString().substring(4, 6))) {
+                date[0] = i;
+                break;
+            }
+        }
+        return date;
+    }
     public class ParseHackathons extends AsyncTask<String,String,ArrayList<HackathonDTO>>{
+
+
         @Override
         protected ArrayList<HackathonDTO> doInBackground(String... params) {
             HttpURLConnection connection = null;
@@ -61,16 +95,6 @@ public class HackPage extends FragmentActivity {
                     buffer.append(line);
                 }
                 String finalJSON = buffer.toString();
-//                String months[] = {"January","February","March","April","May","June","July","August",
-//                        "September","October","November","December"};
-//                Date today = Calendar.getInstance().getTime();
-//                for(int i = 0; i < months.length;i++){
-//                    if (months[i].startsWith(today.toString().substring(4,6))){
-//                        String currentMonth = months[i];
-//                        int index = i;
-//                        break;
-//                    }
-//                }
                 JSONObject parentObject = new JSONObject(finalJSON);
                 JSONArray parentArray = parentObject.getJSONArray("January");
                 allHackathons = new  ArrayList<HackathonDTO>();
@@ -143,12 +167,9 @@ public class HackPage extends FragmentActivity {
                     parsePicture.execute("https://graph.facebook.com/"+ hack.getFacebookURL() +"" +
                             "?fields=picture.width(640)&access_token=1278772608884108%7CNyvDdjr45c-jtXgQyRG0rkiTq2s");
                 }
-
-
             }
         }
     }
-
     public class ParsePicture extends AsyncTask<String,String,String>{
         HackathonDTO hackathon;
         public ParsePicture(HackathonDTO hack){
@@ -239,11 +260,4 @@ public class HackPage extends FragmentActivity {
             }
         }
     }
-
-
-
-
-
-
-
 }
