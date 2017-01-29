@@ -32,10 +32,7 @@ public class EventsPage extends FragmentActivity {
 
     // initialize a new view pager object
     ViewPager viewPager;
-    EventDTO event;
     public ArrayList<EventDTO> eventDTOs;
-    int counter = 0;
-    int counter2 = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -262,7 +259,24 @@ public class EventsPage extends FragmentActivity {
 
                 //set adapter for viewPager
                 viewPager.setAdapter(eventSwipeAdapter);
+
+                //move to current if needed
+                moveToCurrent();
+
            // }
+        }
+    }
+
+    public void moveToCurrent(){
+        Bundle myBundle = getIntent().getExtras();
+
+        if (myBundle != null){
+            int move = myBundle.getInt("move");
+            int nextIndex = viewPager.getCurrentItem() + move;
+
+            if ((nextIndex < viewPager.getChildCount()) && (nextIndex >= 0)) {
+                viewPager.setCurrentItem(nextIndex);
+            }
         }
     }
 }
