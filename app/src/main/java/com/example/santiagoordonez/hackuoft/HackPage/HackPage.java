@@ -40,17 +40,17 @@ public class HackPage extends FragmentActivity {
         setContentView(R.layout.activity_show_hackathons);
         int index = 1;
         int date[] = getDate();
-        int couter = 1;
+        int counter = 1;
+
+        //Makes the 3 api calls to get the next 3 months of hackathons information.
         while (counter < 3){
             if (date[0] < 10){
                 index++;
                 new ParseHackathons().execute("http://www.hackalist.org/api/1.0/2017/0"+date[0]+".json");
-            }
-            if (index >= 10 && index < 12){
+            }else if (index >= 10 && index < 12){
                 index++;
                 new ParseHackathons().execute("http://www.hackalist.org/api/1.0/2017/"+date[0]+".json");
-            }
-            if (index >12){
+            }else if (index >12){
                 index++;
                 new ParseHackathons().execute("http://www.hackalist.org/api/1.0/2017/0"+date[0]%12+".json");
             }
