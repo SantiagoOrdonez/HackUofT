@@ -23,7 +23,8 @@
         <activity android:name=".MenuActivity" />
         <activity android:name=".HackPage.HackPage" />
         <activity android:name=".HackPage.HackPageDetails" />
-        <activity android:name=".EventPage.EventsPage"></activity>
+        <activity android:name=".EventPage.EventsPage" />
+        <activity android:name=".EventPage.EventDetails"></activity>
     </application>
 
 </manifest>

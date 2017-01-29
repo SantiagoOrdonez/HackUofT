@@ -8,6 +8,20 @@ public class EventDTO {
     String Name;
     String Description;
     String eventId;
+    String pictureUrl;
+
+
+    public String getFacebookUrl(){
+        return "https://www.facebook.com/" + eventId;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String url) {
+        this.pictureUrl = url;
+    }
 
     public String getEventId() {
         return eventId;
