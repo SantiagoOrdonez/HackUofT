@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.santiagoordonez.hackuoft.R;
 
@@ -56,20 +58,63 @@ public class EventPageFragment extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
 
+//        view.setOnTouchListener(new View.OnTouchListener() {
+//
+//            public boolean onTouch(View v, MotionEvent event) {
+//
+//                if(event.getAction() == MotionEvent.ACTION_UP){
+//                    //go to the link url
+//                    String url_final = "https://www.facebook.com/" + id;
+//                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url_final));
+//                    startActivity(browserIntent);
+//                }
+//                return true;
+//            }
+//        });
+
+        final GestureDetector gesture = new GestureDetector(getActivity(),
+                new GestureDetector.SimpleOnGestureListener() {
+
+                    @Override
+                    public boolean onDown(MotionEvent e) {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+                                           float velocityY) {
+                        //Log.i(Constants.APP_TAG, "onFling has been called!");
+                        final int SWIPE_MIN_DISTANCE = 120;
+                        final int SWIPE_MAX_OFF_PATH = 250;
+                        final int SWIPE_THRESHOLD_VELOCITY = 200;
+                        try {
+                            if (Math.abs(e1.getX() - e2.getX()) > SWIPE_MAX_OFF_PATH)
+                                return false;
+                            if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE
+                                    && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                                //Log.i(Constants.APP_TAG, "Right to Left");
+                                //user "Swiped up"
+
+
+                            } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE
+                                    && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                                //Log.i(Constants.APP_TAG, "Left to Right");
+                                //user "Swiped down"
+
+                            }
+                        } catch (Exception e) {
+                            // nothing
+                        }
+                        return super.onFling(e1, e2, velocityX, velocityY);
+                    }
+                });
+
         view.setOnTouchListener(new View.OnTouchListener() {
-
+            @Override
             public boolean onTouch(View v, MotionEvent event) {
-
-                if(event.getAction() == MotionEvent.ACTION_UP){
-                    //go to the link url
-                    String url_final = "https://www.facebook.com/" + id;
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url_final));
-                    startActivity(browserIntent);
-                }
-                return true;
+                return gesture.onTouchEvent(event);
             }
         });
-
 
     }
 }
