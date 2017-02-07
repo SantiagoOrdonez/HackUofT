@@ -27,6 +27,7 @@ public class EventsPage extends FragmentActivity {
     // initialize a new view pager object
     ViewPager viewPager;
     Calendar cl;
+    String sd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +54,8 @@ public class EventsPage extends FragmentActivity {
 
             //set adapter for viewPager
             viewPager.setAdapter(eventSwipeAdapter);
+
+
 
         }
 
