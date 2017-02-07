@@ -1,12 +1,10 @@
 package com.example.santiagoordonez.hackuoft.EventPage;
 
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
-import com.example.santiagoordonez.hackuoft.HackPage.HackSwipeAdapter;
 import com.example.santiagoordonez.hackuoft.R;
 import com.example.santiagoordonez.hackuoft.dto.EventDTO;
 
@@ -22,13 +20,13 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
 
 public class EventsPage extends FragmentActivity {
 
     // initialize a new view pager object
     ViewPager viewPager;
-
+    Calendar cl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +79,10 @@ public class EventsPage extends FragmentActivity {
 
                 JSONObject parentObject = new JSONObject(finalJson);
                 JSONArray parentArray = parentObject.getJSONArray("data");
+                cl = Calendar.getInstance();
+                int year = cl.get(Calendar.YEAR); // get the current year
+                int month = cl.get(Calendar.MONTH); // month...
+                int day = cl.get(Calendar.DAY_OF_MONTH); // current day in the month
 
                 ArrayList<EventDTO> EventDTOList = new ArrayList<EventDTO>();
 
@@ -88,7 +90,6 @@ public class EventsPage extends FragmentActivity {
                     EventDTO currentEventDTO = new EventDTO();
 
                     JSONObject finalObject = parentArray.getJSONObject(i);
-                    //Checks for the date if it is in the future or the day of
                     String startTime = "";
                     if(finalObject.has("start_time")){
                         startTime = (finalObject.getString("start_time").substring(0,10));
@@ -97,7 +98,8 @@ public class EventsPage extends FragmentActivity {
                     if(finalObject.has("endTime")){
                         endTime = (finalObject.getString("end_time").substring(0,10));
                     }
-                    if (Integer.parseInt(startTime.substring(0,4))<=2015){
+                    if (Integer.parseInt(startTime.substring(0,4))<=year && (Integer.parseInt(startTime.substring(5,7)) <=month)&&
+                            (Integer.parseInt(startTime.substring(0,4)) <=day)){
                         System.out.println("dead");
                         break;
                     }
