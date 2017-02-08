@@ -86,7 +86,7 @@ public class HackPageFragment extends Fragment {
         ImageView cool_pic = (ImageView) getActivity().findViewById(R.id.imageView);
 
         ImageView hack_background = (ImageView) getActivity().findViewById(R.id.hack_fragment_image);
-        if(!(picture_url == null)){
+        if(picture_url != null && !picture_url.equals("")){
             Picasso.with(getContext()).load(picture_url).into(hack_background);
         }else{
             hack_background.setImageResource(R.drawable.hack_screen_pic);

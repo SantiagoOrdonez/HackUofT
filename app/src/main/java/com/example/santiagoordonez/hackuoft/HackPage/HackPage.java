@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
+
 import com.example.santiagoordonez.hackuoft.HackPage.HackSwipeAdapter;
 import com.example.santiagoordonez.hackuoft.R;
 import com.example.santiagoordonez.hackuoft.R;
@@ -32,83 +34,98 @@ public class HackPage extends FragmentActivity {
     ArrayList<HackathonDTO> allHackathons;
     int counter = 0;
     int counter2 = 0;
-
+    private MyDate date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_hackathons);
-        int index = 1;
-        int date[] = getDate();
-        int counter = 1;
+        date = new MyDate();
+        int counter = 0;
+        int month = date.getMonth();
+
+
 
         //Makes the 3 api calls to get the next 3 months of hackathons information.
         while (counter < 3){
-            if (date[0] < 10){
-                index++;
-                new ParseHackathons().execute("http://www.hackalist.org/api/1.0/2017/0"+date[0]+".json");
-            }else if (index >= 10 && index < 12){
-                index++;
-                new ParseHackathons().execute("http://www.hackalist.org/api/1.0/2017/"+date[0]+".json");
-            }else if (index >12){
-                index++;
-                new ParseHackathons().execute("http://www.hackalist.org/api/1.0/2017/0"+date[0]%12+".json");
+            if (month < 10){
+                new ParseHackathons().execute("http://www.hackalist.org/api/1.0/"+date.getYear()+"/0"+ month+".json",  date.getMonthStr(month));
+                Log.v("DEBUG",""+month);
+            }else if (month >= 10 && month <= 12){
+                new ParseHackathons().execute("http://www.hackalist.org/api/1.0/"+date.getYear()+"/"+month+".json", date.getMonthStr(month) );
+            }else if (month >12){
+                new ParseHackathons().execute("http://www.hackalist.org/api/1.0/"+date.getYear()+1+"/0"+month%12+".json", date.getMonthStr(month));
             }
+            month++;
             counter++;
         }
     }
-    public int[] getDate() {
-        int index = -1;
-        int date[] = new int[2];
-        String months[] = {"January", "February", "March", "April", "May", "June", "July", "August",
-                "September", "October", "November", "December"};
-        Date today = Calendar.getInstance().getTime();
-        for (int i = 0; i < months.length; i++) {
-            if (months[i].startsWith(today.toString().substring(4, 6))) {
-                date[0] = i;
-                break;
-            }
-        }
-        return date;
-    }
-    public class ParseHackathons extends AsyncTask<String,String,ArrayList<HackathonDTO>>{
 
+    public class ParseHackathons extends AsyncTask<String,String,ArrayList<HackathonDTO>>{
 
         @Override
         protected ArrayList<HackathonDTO> doInBackground(String... params) {
-            HttpURLConnection connection = null;
+            HttpURLConnection HackathonsAPIConnection = null;
             BufferedReader reader = null;
             try{
-                URL url = new URL(params[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.connect();
-
-                InputStream stream = connection.getInputStream();
-
-                reader = new BufferedReader(new InputStreamReader(stream));
-
-                StringBuffer buffer = new StringBuffer();
-
-                String line = "";
-
-                while ((line = reader.readLine()) != null){
-                    buffer.append(line);
-                }
-                String finalJSON = buffer.toString();
+                System.out.println(params[0]);
+                HackathonsAPIConnection = getConnection(params[0]);
+                reader = getBufferedReader(HackathonsAPIConnection);
+                String finalJSON = getJSONString(reader);
                 JSONObject parentObject = new JSONObject(finalJSON);
-                JSONArray parentArray = parentObject.getJSONArray("January");
-                allHackathons = new  ArrayList<HackathonDTO>();
-                for (int i = 0; i < parentArray.length();i++){
-                    hackathonDTO = new HackathonDTO();
-                    JSONObject jsonObject =  parentArray.getJSONObject(i);
+                JSONArray parentArray = parentObject.getJSONArray(params[1]);
+                return getHackathons(parentArray);
+            }catch(MalformedURLException e){
+                e.printStackTrace();
+            }catch(IOException e){
+                e.printStackTrace();
+            }catch(JSONException e){
+                e.printStackTrace();
+            } finally {
+                if (HackathonsAPIConnection != null){
+                    HackathonsAPIConnection.disconnect();
+                }
+                try {
+                    if (reader != null){
+                        reader.close();
+                    }
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+
+        /**
+         *  Returns a string in JSON format with data from hackathons.
+         * @param reader BufferedReader
+         * @return String
+         * @throws IOException
+         */
+        String getHackAThonsStringData(BufferedReader reader) throws IOException{
+            StringBuilder buffer = new StringBuilder();
+            String line = "";
+            while ((line = reader.readLine()) != null){
+                buffer.append(line);
+            }
+            return buffer.toString();
+        }
+
+        ArrayList<HackathonDTO> getHackathons(JSONArray parentArray)throws  JSONException{
+            allHackathons = new ArrayList<>();
+            for (int i = 0; i < parentArray.length();i++){
+                hackathonDTO = new HackathonDTO();
+                JSONObject jsonObject =  parentArray.getJSONObject(i);
+                String startDate = jsonObject.getString("startDate");
+                if (hackathonHasNotPassed(startDate)){
+                    hackathonDTO.setStartDate(startDate);
+                    String endDate = jsonObject.getString("endDate");
+                    hackathonDTO.setEndDate(endDate);
                     String title = jsonObject.getString("title");
                     hackathonDTO.setTitle(title);
                     String urlobj = jsonObject.getString("url");
                     hackathonDTO.setUrl(urlobj);
-                    String startDate = jsonObject.getString("startDate");
-                    hackathonDTO.setStartDate(startDate);
-                    String endDate = jsonObject.getString("endDate");
-                    hackathonDTO.setEndDate(endDate);
                     String year = jsonObject.getString("year");
                     hackathonDTO.setYear(year);
                     String city = jsonObject.getString("city");
@@ -135,28 +152,15 @@ public class HackPage extends FragmentActivity {
                     hackathonDTO.setNotes(notes);
                     allHackathons.add(hackathonDTO);
                 }
-                return allHackathons;
-            }catch(MalformedURLException e){
-                e.printStackTrace();
-
-            }catch(IOException e){
-                e.printStackTrace();
-            }catch(JSONException e){
-                e.printStackTrace();
-            } finally {
-                if (connection != null){
-                    connection.disconnect();
-                }
-                try {
-                    if (reader != null){
-                        reader.close();
-                    }
-                } catch (IOException e){
-                    e.printStackTrace();
-                }
             }
-            return null;
+            return allHackathons;
         }
+
+        boolean hackathonHasNotPassed(String startDate){
+            int hackathonDay =  Integer.parseInt((startDate.substring(startDate.length() - 2)).trim());
+            return date.getDay() < hackathonDay;
+        }
+
         @Override
         protected void onPostExecute(ArrayList<HackathonDTO> hacks) {
             super.onPostExecute(hacks);
@@ -170,6 +174,7 @@ public class HackPage extends FragmentActivity {
             }
         }
     }
+
     public class ParsePicture extends AsyncTask<String,String,String>{
         HackathonDTO hackathon;
         public ParsePicture(HackathonDTO hack){
@@ -178,30 +183,16 @@ public class HackPage extends FragmentActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            HttpURLConnection connection = null;
+            HttpURLConnection facebookConnection = null;
             BufferedReader reader = null;
             try{
-                URL url = new URL(params[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.connect();
-
-                InputStream stream = connection.getInputStream();
-
-                reader = new BufferedReader(new InputStreamReader(stream));
-
-                StringBuffer buffer = new StringBuffer();
-
-                String line = "";
-
-                while ((line = reader.readLine()) != null){
-                    buffer.append(line);
-                }
-                String finalJSON = buffer.toString();
+                facebookConnection = getConnection(params[0]);
+                reader = getBufferedReader(facebookConnection);
+                String finalJSON = getJSONString(reader);
                 JSONObject parentObject = new JSONObject(finalJSON);
                 JSONObject pictureObject;
                 if (parentObject.has("picture")){
                     pictureObject = parentObject.getJSONObject("picture");
-
                 }else{
                     return "";
                 }
@@ -216,11 +207,13 @@ public class HackPage extends FragmentActivity {
 
             }catch(IOException e){
                 e.printStackTrace();
+                return "";//poor error handling
             }catch(JSONException e){
                 e.printStackTrace();
+                return "";//poor error handling
             } finally {
-                if (connection != null){
-                    connection.disconnect();
+                if (facebookConnection != null){
+                    facebookConnection.disconnect();
                 }
                 try {
                     if (reader != null){
@@ -232,7 +225,6 @@ public class HackPage extends FragmentActivity {
             }
             return null;
         }
-
         @Override
         protected void onPostExecute(String url) {
             super.onPostExecute(url);
@@ -248,16 +240,41 @@ public class HackPage extends FragmentActivity {
         protected void allDone(){
             if (counter >= counter2){
                 //get the view pager object from the view
-                System.out.println("hellodjasdsad");
                 viewPager = (ViewPager) findViewById(R.id.viewPager);
-
                 //add swipe adapter
                 HackSwipeAdapter hackSwipeAdapter = new HackSwipeAdapter(getSupportFragmentManager(),allHackathons);
-
                 //set adapter for viewPager
                 viewPager.setAdapter(hackSwipeAdapter);
                 //start json parsin.
             }
         }
+    }
+
+    /**
+     * Gets the inputStream from the HackAList API and returns a new BufferedReader.
+     * @param connection
+     * @return
+     * @throws IOException
+     */
+    BufferedReader getBufferedReader(HttpURLConnection connection) throws  IOException{
+        InputStream stream = connection.getInputStream();
+        return new BufferedReader(new InputStreamReader(stream));
+    }
+
+    HttpURLConnection getConnection(String link) throws IOException{
+        HttpURLConnection connection = null;
+        URL url = new URL(link);
+        connection = (HttpURLConnection) url.openConnection();
+        connection.connect();
+        return connection;
+    }
+
+    String getJSONString(BufferedReader reader) throws IOException{
+        StringBuilder buffer = new StringBuilder();
+        String line = "";
+        while ((line = reader.readLine()) != null){
+            buffer.append(line);
+        }
+        return buffer.toString();
     }
 }
