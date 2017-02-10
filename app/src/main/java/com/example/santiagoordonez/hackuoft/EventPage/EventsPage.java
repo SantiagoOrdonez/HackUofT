@@ -271,8 +271,9 @@ public class EventsPage extends FragmentActivity {
         Bundle myBundle = getIntent().getExtras();
 
         if (myBundle != null){
+            int current = myBundle.getInt("position");
             int move = myBundle.getInt("move");
-            int nextIndex = viewPager.getCurrentItem() + move;
+            int nextIndex = current + move;
 
             if ((nextIndex < viewPager.getChildCount()) && (nextIndex >= 0)) {
                 viewPager.setCurrentItem(nextIndex);

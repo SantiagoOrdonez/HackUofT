@@ -12,8 +12,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.santiagoordonez.hackuoft.R;
+import com.example.santiagoordonez.hackuoft.TouchListerner.OnSwipeTouchListener;
 
 import static java.security.AccessController.getContext;
 
@@ -63,6 +65,40 @@ public class EventDetails extends AppCompatActivity {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url_final));
                 startActivity(browserIntent);
             }
+        });
+
+        description.setOnTouchListener(new OnSwipeTouchListener(EventDetails.this) {
+            public void onSwipeTop() {
+                Toast.makeText(EventDetails.this, "top", Toast.LENGTH_SHORT).show();
+            }
+            public void onSwipeRight() {
+                //Toast.makeText(EventDetails.this, "right", Toast.LENGTH_SHORT).show();
+
+                //pass the already bundled info into new events page and slide left
+                Intent toEvenDetailsIntent = new Intent( activity, EventsPage.class);
+                Bundle newBundle = new Bundle();
+                newBundle.putInt("move", -1);
+                newBundle.putInt("position",myBundle.getInt("position"));
+                toEvenDetailsIntent.putExtras(newBundle);
+                startActivity(toEvenDetailsIntent);
+                //overridePendingTransition(R.anim.slide_out, R.anim.slide_in);
+            }
+            public void onSwipeLeft() {
+                //Toast.makeText(EventDetails.this, "left", Toast.LENGTH_SHORT).show();
+
+                //pass the already bundled info into new events page and slide left
+                Intent toEvenDetailsIntent = new Intent( activity, EventsPage.class);
+                Bundle newBundle = new Bundle();
+                newBundle.putInt("move", 1);
+                newBundle.putInt("position",myBundle.getInt("position"));
+                toEvenDetailsIntent.putExtras(newBundle);
+                startActivity(toEvenDetailsIntent);
+                //overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+            }
+            public void onSwipeBottom() {
+                Toast.makeText(EventDetails.this, "bottom", Toast.LENGTH_SHORT).show();
+            }
+
         });
 
         /**

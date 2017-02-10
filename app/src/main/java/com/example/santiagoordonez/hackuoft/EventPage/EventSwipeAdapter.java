@@ -19,7 +19,7 @@ public class EventSwipeAdapter extends FragmentPagerAdapter {
     private ArrayList<EventDTO> eventDTOs;
 
     //This constructor accepts an array of Event classes that it will iterate through as swipe objects.
-    public EventSwipeAdapter(FragmentManager fm, ArrayList<EventDTO> events ) {
+    public EventSwipeAdapter(FragmentManager fm, ArrayList<EventDTO> events) {
         super(fm);
         eventDTOs = events;
     }
@@ -54,6 +54,7 @@ public class EventSwipeAdapter extends FragmentPagerAdapter {
         bundle.putString("id", id);
         bundle.putString("description", description);
         bundle.putString("location", location);
+        bundle.putInt("position", position);
 
         //add bundle as an argument
         fragment.setArguments(bundle);

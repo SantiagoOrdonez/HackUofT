@@ -59,19 +59,7 @@ public class EventPageFragment extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
 
-//        view.setOnTouchListener(new View.OnTouchListener() {
-//
-//            public boolean onTouch(View v, MotionEvent event) {
-//
-//                if(event.getAction() == MotionEvent.ACTION_UP){
-//                    //go to the link url
-//                    String url_final = "https://www.facebook.com/" + id;
-//                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url_final));
-//                    startActivity(browserIntent);
-//                }
-//                return true;
-//            }
-//        });
+        //
 
         final GestureDetector gesture = new GestureDetector(getActivity(),
                 new GestureDetector.SimpleOnGestureListener() {
@@ -101,12 +89,8 @@ public class EventPageFragment extends Fragment {
                                     && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
                                 //Log.i(Constants.APP_TAG, "Left to Right");
                                 //user "Swiped down"
+                                goToDescription();
 
-                                //pass the already bundled info into new eventDetails page and slide down
-                                Intent toEvenDetailsIntent = new Intent(getContext(), EventDetails.class);
-                                toEvenDetailsIntent.putExtras(bundle);
-                                getActivity().startActivity(toEvenDetailsIntent);
-                                getActivity().overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
 
                             }
                         } catch (Exception e) {
@@ -123,5 +107,13 @@ public class EventPageFragment extends Fragment {
             }
         });
 
+    }
+
+    public void goToDescription(){
+        //pass the already bundled info into new eventDetails page and slide down
+        Intent toEvenDetailsIntent = new Intent(getContext(), EventDetails.class);
+        toEvenDetailsIntent.putExtras(bundle);
+        getActivity().startActivity(toEvenDetailsIntent);
+        getActivity().overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
     }
 }
