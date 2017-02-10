@@ -12,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.squareup.picasso.Picasso;
 
 import com.example.santiagoordonez.hackuoft.R;
 
@@ -25,6 +27,7 @@ public class EventPageFragment extends Fragment {
     TextView dateView;
     String id;
     Bundle bundle;
+    String pictureUrl;
 
     public EventPageFragment() {
         // Required empty public constructor
@@ -39,7 +42,18 @@ public class EventPageFragment extends Fragment {
         View view = inflater.inflate(R.layout.event_fragment, container, false);
         eventView = (TextView) view.findViewById(R.id.title);
         dateView = (TextView) view.findViewById(R.id.date);
+        ImageView eventBackgroundPic = (ImageView) view.findViewById(R.id.event_details_picture);
         bundle = getArguments();
+
+        //get the picture url from bundle
+        pictureUrl = bundle.getString("picUrl");
+
+        //get the picture into the image view
+        if((pictureUrl != null) && !pictureUrl.equals("")){
+            Picasso.with(getContext()).load(pictureUrl).into(eventBackgroundPic);
+        }else{
+            eventBackgroundPic.setImageResource(R.drawable.event_screen_pic);
+        }
 
         //get the title
         String title = bundle.getString("title");
@@ -48,6 +62,7 @@ public class EventPageFragment extends Fragment {
         //get the id
         id = bundle.getString("id");
 
+        //set event title and date
         eventView.setText(title);
         dateView.setText(date);
 

@@ -63,8 +63,8 @@ public class EventsPage extends FragmentActivity {
                 ParsePicture parsePicture = new ParsePicture(event);
                 if (!event.getFacebookUrl().equals("")) {
                     //counter2++;
-                    parsePicture.execute("https://graph.facebook.com/" + event.getEventId() + "" +
-                            "?fields=picture.width(640)&access_token=1278772608884108%7CNyvDdjr45c-jtXgQyRG0rkiTq2s");
+                    parsePicture.execute("https://graph.facebook.com/" + event.getEventId() +
+                            "/?fields=cover.width(640)&access_token=1278772608884108%7CNyvDdjr45c-jtXgQyRG0rkiTq2s");
                 }
 
 
@@ -202,16 +202,15 @@ public class EventsPage extends FragmentActivity {
                 }
                 String finalJSON = buffer.toString();
                 JSONObject parentObject = new JSONObject(finalJSON);
-                JSONObject pictureObject;
-                if (parentObject.has("picture")) {
-                    pictureObject = parentObject.getJSONObject("picture");
-
+                JSONObject coverObject;
+                if (parentObject.has("cover")) {
+                    coverObject = parentObject.getJSONObject("cover");
                 } else {
                     return "";
                 }
-                JSONObject dataObject = pictureObject.getJSONObject("data");
-                if (dataObject.has("url")) {
-                    return dataObject.getString("url");
+
+                if (coverObject.has("source")) {
+                    return coverObject.getString("source");
                 } else {
                     return "";
                 }

@@ -42,6 +42,8 @@ public class EventSwipeAdapter extends FragmentPagerAdapter {
         String description = current_event.getDescription();
         //pass in the location
         String location = current_event.getLocation();
+        //get picture
+        String picture = current_event.getPictureUrl();
 
 
         //This will allow us to pass variables from the HackathonEvent Objects to the fragments
@@ -55,6 +57,7 @@ public class EventSwipeAdapter extends FragmentPagerAdapter {
         bundle.putString("description", description);
         bundle.putString("location", location);
         bundle.putInt("position", position);
+        bundle.putString("picUrl", picture);
 
         //add bundle as an argument
         fragment.setArguments(bundle);

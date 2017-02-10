@@ -5,6 +5,14 @@
     tools:context="com.example.santiagoordonez.hackuoft.EventPage.EventPageFragment">
 
     <!-- Transparent layer -->
+    <!--Increase the thickness of the this-->
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:id="@+id/event_details_picture"
+        />
+
     <RelativeLayout
         android:id="@+id/transparentOverlay2"
         android:layout_width="match_parent" android:layout_height="120dp"
@@ -23,20 +31,15 @@
         android:gravity="center_horizontal"
         android:id="@+id/title"
         android:maxLines="1"
-        android:textColor="#080808"
+        android:textColor="#ffffff"
         android:textSize="40dp" /> <!-- maximum size -->
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity=""/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="19/30/2089"
         android:id="@+id/date"
-        android:textColor="#080808"
+        android:textColor="#ffffff"
         android:gravity="center_horizontal"
         android:layout_marginTop="450dp"
         android:textSize="20dp"/>
