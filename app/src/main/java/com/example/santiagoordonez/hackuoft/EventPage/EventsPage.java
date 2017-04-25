@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.santiagoordonez.hackuoft.HackPage.HackPage;
 import com.example.santiagoordonez.hackuoft.HackPage.HackSwipeAdapter;
@@ -29,6 +30,8 @@ import java.util.List;
 import static com.example.santiagoordonez.hackuoft.R.id.viewPager;
 
 public class EventsPage extends FragmentActivity {
+    //debug stuff
+    private static final String TAG = "debug";
 
     // initialize a new view pager object
     ViewPager viewPager;
@@ -260,21 +263,27 @@ public class EventsPage extends FragmentActivity {
                 viewPager.setAdapter(eventSwipeAdapter);
 
                 //move to current if needed
-                moveToCurrent();
+                moveToCurrent(eventSwipeAdapter);
 
            // }
         }
     }
 
-    public void moveToCurrent(){
+    public void moveToCurrent(EventSwipeAdapter eventSwipeAdapter){
         Bundle myBundle = getIntent().getExtras();
 
         if (myBundle != null){
             int current = myBundle.getInt("position");
+            Log.v(TAG, "position=" + current);
             int move = myBundle.getInt("move");
+            Log.v(TAG, "moveby=" + move);
             int nextIndex = current + move;
+            Log.v(TAG, "final=" + nextIndex);
 
-            if ((nextIndex < viewPager.getChildCount()) && (nextIndex >= 0)) {
+            int children = eventSwipeAdapter.getCount();
+            Log.v(TAG, "children=" + children);
+            if ((nextIndex < children) && (nextIndex >= 0)) {
+                Log.v(TAG, "Set current index");
                 viewPager.setCurrentItem(nextIndex);
             }
         }

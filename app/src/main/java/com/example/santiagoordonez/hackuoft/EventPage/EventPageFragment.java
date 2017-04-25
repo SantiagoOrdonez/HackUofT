@@ -88,9 +88,9 @@ public class EventPageFragment extends Fragment {
                     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
                                            float velocityY) {
                         //Log.i(Constants.APP_TAG, "onFling has been called!");
-                        final int SWIPE_MIN_DISTANCE = 70;
-                        final int SWIPE_MAX_OFF_PATH = 250;
-                        final int SWIPE_THRESHOLD_VELOCITY = 70;
+                        final int SWIPE_MIN_DISTANCE = 150;
+                        final int SWIPE_MAX_OFF_PATH = 350;
+                        final int SWIPE_THRESHOLD_VELOCITY = 30;
                         try {
                             if (Math.abs(e1.getX() - e2.getX()) > SWIPE_MAX_OFF_PATH)
                                 return false;
@@ -98,13 +98,13 @@ public class EventPageFragment extends Fragment {
                                     && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
                                 //Log.i(Constants.APP_TAG, "Right to Left");
                                 //user "Swiped up"
+                                goToDescription();
 
 
                             } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE
                                     && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
                                 //Log.i(Constants.APP_TAG, "Left to Right");
                                 //user "Swiped down"
-                                goToDescription();
 
 
                             }
@@ -129,6 +129,6 @@ public class EventPageFragment extends Fragment {
         Intent toEvenDetailsIntent = new Intent(getContext(), EventDetails.class);
         toEvenDetailsIntent.putExtras(bundle);
         getActivity().startActivity(toEvenDetailsIntent);
-        getActivity().overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
+        getActivity().overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
     }
 }
